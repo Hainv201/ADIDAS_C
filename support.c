@@ -35,49 +35,43 @@ char AddParity(char nibble){
 }
 
 char CorrectInputCharacter(char character){
-    if(CheckEven(character) == 1){
-        if(CheckEven(character&DECODE_MASKP0) == 1 
-        && CheckEven(character&DECODE_MASKP1)==1 
-        && CheckEven(character&DECODE_MASKP2)==1) //incorrect at d1
-        {
-            return character^16;
-        }
-        else if (CheckEven(character&DECODE_MASKP0) == 1 
-        && CheckEven(character&DECODE_MASKP1)==1) //incorrect at d0
-        {
-            return character ^8;
-        }
-        else if (CheckEven(character&DECODE_MASKP0) == 1 
-        && CheckEven(character&DECODE_MASKP2)==1) // incorrect at d2
-        {
-            return character ^32;
-        }
-        else if (CheckEven(character&DECODE_MASKP1) == 1 
-        && CheckEven(character&DECODE_MASKP2)==1) // incorrect at d3
-        {
-            return character ^64;
-        }
-        else if (CheckEven(character&DECODE_MASKP0) == 1) // incorrect at p0
-        {
-            return character ^1;
-        }
-        else if (CheckEven(character&DECODE_MASKP1) == 1) // incorrect at p1
-        {
-            return character ^2;
-        }   
-        else if (CheckEven(character&DECODE_MASKP2) == 1) // incorrect at p2
-        {
-            return character ^4;
-        }
-        else
-        {
-            return character ^128; //incorrect at first bit
-        }  
+    if(CheckEven(character&DECODE_MASKP0) == 1 
+    && CheckEven(character&DECODE_MASKP1)==1 
+    && CheckEven(character&DECODE_MASKP2)==1) //incorrect at d1
+    {
+        return character^16;
+    }
+    else if (CheckEven(character&DECODE_MASKP0) == 1 
+    && CheckEven(character&DECODE_MASKP1)==1) //incorrect at d0
+    {
+        return character ^8;
+    }
+    else if (CheckEven(character&DECODE_MASKP0) == 1 
+    && CheckEven(character&DECODE_MASKP2)==1) // incorrect at d2
+    {
+        return character ^32;
+    }
+    else if (CheckEven(character&DECODE_MASKP1) == 1 
+    && CheckEven(character&DECODE_MASKP2)==1) // incorrect at d3
+    {
+        return character ^64;
+    }
+    else if (CheckEven(character&DECODE_MASKP0) == 1) // incorrect at p0
+    {
+        return character ^1;
+    }
+    else if (CheckEven(character&DECODE_MASKP1) == 1) // incorrect at p1
+    {
+        return character ^2;
+    }   
+    else if (CheckEven(character&DECODE_MASKP2) == 1) // incorrect at p2
+    {
+        return character ^4;
     }
     else
     {
-        return character;
-    }  
+        return character ^128; //incorrect at first bit
+    }
 }
 
 char GetData(char high_nibble,char low_nibble){
