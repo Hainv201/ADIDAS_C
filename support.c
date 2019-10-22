@@ -74,7 +74,12 @@ char CorrectInputCharacter(char character){
             return character ^128; //incorrect at first bit
         }  
     }
+    else
+    {
+        return character;
+    }  
 }
+
 char GetData(char high_nibble,char low_nibble){
     high_nibble = (high_nibble&120)<<1;
     low_nibble = low_nibble>>3;

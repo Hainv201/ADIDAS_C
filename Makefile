@@ -1,8 +1,14 @@
-all: encode channel decode
+CC = gcc
+CFLAGS = -Wall
+LDFLAGS = -lm
+SHAREDFILES = support.c
+TARGET = encode channel decode
+
+all: $(TARGET)
 
 encode: encode.c
-	gcc -Wall -o encode encode.c support.c
+	$(CC) $(CFLAGS) -o encode encode.c $(SHAREDFILES)
 channel: channel.c
-	gcc -Wall -o channel channel.c -lm
+	$(CC) $(CFLAGS) -o channel channel.c $(LDFLAGS)
 decode: decode.c
-	gcc -Wall -o decode decode.c support.c
+	$(CC) $(CFLAGS) -o decode decode.c $(SHAREDFILES)
