@@ -4,7 +4,7 @@
 #include "support.h"
 
 char* ConvertCharactertoNibbles(char input_character){
-    char* Nibbles = malloc(sizeof(char));
+    static char Nibbles[2];
     Nibbles[0] = (input_character&240)>>1;//Get High Nibble
     Nibbles[1] = (input_character&15)<<3;//Get Low Nibble
     return Nibbles;
