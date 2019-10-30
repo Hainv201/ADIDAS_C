@@ -17,7 +17,8 @@ void channel(char * inputfile, char * outputfile)
         exit(1);
     }
     srand (time (NULL));
-    int index, mask;
+    int index;
+    uint8_t mask;
     while (!feof(input_File))
     {
         fread(&character,sizeof(uint8_t),1,input_File);

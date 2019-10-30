@@ -16,19 +16,21 @@ return nibble & 1; // return 0 if it is even and 1 if it is odd
 }
 
 uint8_t AddParity(uint8_t nibble){
-    uint8_t parity[3]={0,0,0};
+    uint8_t p0 = 0;
+    uint8_t p1 = 0;
+    uint8_t p2 = 0;
     if(CheckEven(nibble & ENCODE_MASKP0) == 1){
-        parity[0] = 1;
+        p0 = 1;
     }
     if(CheckEven(nibble & ENCODE_MASKP1) == 1){
-        parity[1] = 1;
+        p1 = 1;
     }
     if(CheckEven(nibble & ENCODE_MASKP2) == 1){
-        parity[2] = 1;
+        p2 = 1;
     }
-    nibble |= parity[0];
-    nibble |= (parity[1]<<1);
-    nibble |= (parity[2]<<2);
+    nibble |= p0;
+    nibble |= (p1<<1);
+    nibble |= (p2<<2);
     return nibble;
 }
 
