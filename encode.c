@@ -2,34 +2,34 @@
 #include <stdlib.h>
 #include <string.h>
 #include "support.h"
-
-FILE *input_File;
-FILE *output_File;
-char character;
-
+#include <inttypes.h>
 
 void encode(char * inputfile, char * outputfile)
 {
+    FILE *input_File;
+    FILE *output_File;
+    uint8_t character,encode_high_nibble,encode_low_nibble;
     input_File = fopen(inputfile, "r");
-    output_File = fopen(outputfile, "wb");
+    output_File = fopen(outputfile, "w");
     if(input_File == NULL)
     {
         printf("Error: File pointer is null.\n");
         exit(1);
     }
-    else
+    while (!feof(input_File))
     {
-        while ((character = fgetc(input_File))!=EOF)
+        fread(&character,sizeof(uint8_t),1,input_File);
+        if(feof(input_File))
         {
-            char* Nibbles = ConvertCharactertoNibbles(character);
-            char encode_high_nibble = AddParity(Nibbles[0]);
-            fputc(encode_high_nibble,output_File);
-            char encode_low_nibble = AddParity(Nibbles[1]);
-            fputc(encode_low_nibble,output_File);
+            break;
         }
-        
+        ConvertCharactertoNibbles(character, &encode_high_nibble, &encode_low_nibble);
+        encode_high_nibble = AddParity(encode_high_nibble);
+        fwrite(&encode_high_nibble,sizeof(uint8_t),1,output_File);
+        encode_low_nibble = AddParity(encode_low_nibble);
+        fwrite(&encode_low_nibble,sizeof(uint8_t),1,output_File);
     }
-    
+
     fclose(input_File);
     fclose(output_File);
 }

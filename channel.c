@@ -1,15 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <time.h>
-
-FILE *input_File;
-FILE *output_File;
-char character;
+#include <inttypes.h>
 
 void channel(char * inputfile, char * outputfile)
 {
+    FILE *input_File;
+    FILE *output_File;
+    uint8_t character;
     input_File = fopen(inputfile, "r");
     output_File = fopen(outputfile, "w");
     if(input_File == NULL)
@@ -17,20 +16,20 @@ void channel(char * inputfile, char * outputfile)
         printf("Error: File pointer is null.\n");
         exit(1);
     }
-     else
+    srand (time (NULL));
+    int index, mask;
+    while (!feof(input_File))
     {
-        srand (time (NULL));
-        int index, mask;
-        while ((character = fgetc(input_File))!=EOF)
+        fread(&character,sizeof(uint8_t),1,input_File);
+        if(feof(input_File))
         {
-            index = rand()%7;
-            mask = pow(2,index);
-            character ^= mask;
-            fputc(character,output_File);
+            break;
         }
-        
-    }
-    
+        index = rand()%8;
+        mask = 1 << index;
+        character ^= mask;
+        fwrite(&character,sizeof(uint8_t),1,output_File);
+    } 
     fclose(input_File);
     fclose(output_File);
 }

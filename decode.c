@@ -2,13 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "support.h"
+#include <inttypes.h>
 
-FILE *input_File;
-FILE *output_File;
-char character;
 
 void decode(char * inputfile, char * outputfile)
 {
+    FILE *input_File;
+    FILE *output_File;
     input_File = fopen(inputfile, "r");
     output_File = fopen(outputfile, "w");
     if(input_File == NULL)
@@ -16,19 +16,21 @@ void decode(char * inputfile, char * outputfile)
         printf("Error: File pointer is null.\n");
         exit(1);
     }
-    else
+    uint8_t low_nibble, high_nibble,data;
+    while (!feof(input_File))
     {
-        char low_nibble, high_nibble,data;
-        while ((character = fgetc(input_File))!=EOF)
+        fread(&high_nibble,sizeof(uint8_t),1,input_File);
+        fread(&low_nibble,sizeof(uint8_t),1,input_File);
+        if(feof(input_File))
         {
-            high_nibble = character;
-            low_nibble = fgetc(input_File);
-            high_nibble = CorrectInputCharacter(high_nibble);
-            low_nibble = CorrectInputCharacter(low_nibble);
-            data = GetData(high_nibble,low_nibble);
-            fputc(data,output_File);
-        }    
+            break;
+        }
+        high_nibble = CorrectInputCharacter(high_nibble);
+        low_nibble = CorrectInputCharacter(low_nibble);
+        data = GetData(high_nibble,low_nibble);
+        fwrite(&data,sizeof(uint8_t),1,output_File);
     }
+    
     fclose(input_File);
     fclose(output_File);
 }
