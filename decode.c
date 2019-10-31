@@ -16,19 +16,18 @@ void decode(char * inputfile, char * outputfile)
         printf("Error: File pointer is null.\n");
         exit(1);
     }
-    uint8_t low_nibble, high_nibble,data;
-    while (!feof(input_File))
+    uint8_t low_nibble, high_nibble, data;
+    int read;
+    read = fread(&high_nibble,1,1,input_File);
+    read = fread(&low_nibble,1,1,input_File);
+    while (read!=0)
     {
-        fread(&high_nibble,sizeof(uint8_t),1,input_File);
-        fread(&low_nibble,sizeof(uint8_t),1,input_File);
-        if(feof(input_File))
-        {
-            break;
-        }
         high_nibble = CorrectInputCharacter(high_nibble);
         low_nibble = CorrectInputCharacter(low_nibble);
         data = GetData(high_nibble,low_nibble);
-        fwrite(&data,sizeof(uint8_t),1,output_File);
+        fwrite(&data,1,1,output_File);
+        read = fread(&high_nibble,1,1,input_File);
+        read = fread(&low_nibble,1,1,input_File);
     }
     
     fclose(input_File);

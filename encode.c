@@ -8,7 +8,6 @@ void encode(char * inputfile, char * outputfile)
 {
     FILE *input_File;
     FILE *output_File;
-    uint8_t character,encode_high_nibble,encode_low_nibble;
     input_File = fopen(inputfile, "r");
     output_File = fopen(outputfile, "w");
     if(input_File == NULL)
@@ -16,18 +15,17 @@ void encode(char * inputfile, char * outputfile)
         printf("Error: File pointer is null.\n");
         exit(1);
     }
-    while (!feof(input_File))
+    uint8_t character,encode_high_nibble,encode_low_nibble;
+    int read;
+    read = fread(&character,1,1,input_File);
+    while (read!=0)
     {
-        fread(&character,sizeof(uint8_t),1,input_File);
-        if(feof(input_File))
-        {
-            break;
-        }
         ConvertCharactertoNibbles(character, &encode_high_nibble, &encode_low_nibble);
         encode_high_nibble = AddParity(encode_high_nibble);
-        fwrite(&encode_high_nibble,sizeof(uint8_t),1,output_File);
+        fwrite(&encode_high_nibble,1,1,output_File);
         encode_low_nibble = AddParity(encode_low_nibble);
-        fwrite(&encode_low_nibble,sizeof(uint8_t),1,output_File);
+        fwrite(&encode_low_nibble,1,1,output_File);
+        read = fread(&character,1,1,input_File);
     }
 
     fclose(input_File);
