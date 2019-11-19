@@ -19,13 +19,13 @@ uint8_t AddParity(uint8_t nibble){
     uint8_t p0 = 0;
     uint8_t p1 = 0;
     uint8_t p2 = 0;
-    if(CheckEven(nibble & ENCODE_MASKP0) == 1){
+    if(CheckEven(nibble & 0x38) == 1){
         p0 = 1;
     }
-    if(CheckEven(nibble & ENCODE_MASKP1) == 1){
+    if(CheckEven(nibble & 0x58) == 1){
         p1 = 1;
     }
-    if(CheckEven(nibble & ENCODE_MASKP2) == 1){
+    if(CheckEven(nibble & 0x70) == 1){
         p2 = 1;
     }
     nibble |= p0;
@@ -35,36 +35,36 @@ uint8_t AddParity(uint8_t nibble){
 }
 
 uint8_t CorrectInputCharacter(uint8_t character){
-    if(CheckEven(character & DECODE_MASKP0) == 1 
-    && CheckEven(character & DECODE_MASKP1) == 1 
-    && CheckEven(character & DECODE_MASKP2) == 1) //incorrect at d1
+    if(CheckEven(character & 0x39) == 1 
+    && CheckEven(character & 0x5A) == 1 
+    && CheckEven(character & 0x74) == 1) //incorrect at d1
     {
         character ^= 0x10;
     }
-    else if (CheckEven(character & DECODE_MASKP0) == 1 
-    && CheckEven(character & DECODE_MASKP1) == 1) //incorrect at d0
+    else if (CheckEven(character & 0x39) == 1 
+    && CheckEven(character & 0x5A) == 1) //incorrect at d0
     {
         character ^= 0x8;
     }
-    else if (CheckEven(character & DECODE_MASKP0) == 1
-    && CheckEven(character & DECODE_MASKP2) == 1) // incorrect at d2
+    else if (CheckEven(character & 0x39) == 1
+    && CheckEven(character & 0x74) == 1) // incorrect at d2
     {
         character ^= 0x20;
     }
-    else if (CheckEven(character & DECODE_MASKP1) == 1 
-    && CheckEven(character & DECODE_MASKP2) == 1) // incorrect at d3
+    else if (CheckEven(character & 0x5A) == 1 
+    && CheckEven(character & 0x74) == 1) // incorrect at d3
     {
         character ^= 0x40;
     }
-    else if (CheckEven(character & DECODE_MASKP0) == 1) // incorrect at p0
+    else if (CheckEven(character & 0x39) == 1) // incorrect at p0
     {
         character ^= 0x1;
     }
-    else if (CheckEven(character & DECODE_MASKP1) == 1) // incorrect at p1
+    else if (CheckEven(character & 0x5A) == 1) // incorrect at p1
     {
         character ^= 0x2;
     }   
-    else if (CheckEven(character & DECODE_MASKP2) == 1) // incorrect at p2
+    else if (CheckEven(character & 0x74) == 1) // incorrect at p2
     {
         character ^= 0x4;
     }
